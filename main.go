@@ -1,28 +1,33 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	c "github.com/alura/banco/contas"
+)
 
 func main() {
-	type ContaCorrente struct {
-		titular       string
-		numeroAgencia int
-		numeroConta   int
-		saldo         float64
-	}
 
-	fmt.Println(ContaCorrente{})
+	fmt.Println(c.ContaCorrente{})
+	contaDaSilvia := c.ContaCorrente{}
+	contaDaSilvia.Titular = "Silvia"
+	contaDaSilvia.Saldo = 500
 
-	contaDaEvelyn := ContaCorrente{
-		titular:       "Evelyn",
-		numeroAgencia: 589,
-		numeroConta:   123456,
-		saldo:         125.5,
-	}
+	fmt.Println(contaDaSilvia.Saldo)
+	fmt.Println(contaDaSilvia.Sacar(200))
+	fmt.Println(contaDaSilvia.Saldo)
 
-	contaDaLucilene := ContaCorrente{"Lucilene", 222, 111222, 200}
-	contaDoGuilherme := ContaCorrente{titular: "Guilherme", saldo: 125.5}
+	statusDeposito, valor := contaDaSilvia.Depositar(2000)
+	fmt.Println(statusDeposito, valor)
 
-	fmt.Println(contaDaEvelyn)
-	fmt.Println(contaDaLucilene)
-	fmt.Println(contaDoGuilherme)
+	contaDaSilvia = c.ContaCorrente{Titular: "Silvia", Saldo: 300}
+	contaDoGustavo := c.ContaCorrente{Titular: "Gustavo", Saldo: 100}
+
+	statusTransferenciaSilvia := contaDaSilvia.Transferir(200, &contaDoGustavo)
+	statusTransferenciaGustavo := contaDoGustavo.Transferir(-200, &contaDaSilvia)
+
+	fmt.Println(statusTransferenciaSilvia)
+	fmt.Println(statusTransferenciaGustavo)
+	fmt.Println(contaDaSilvia)
+	fmt.Println(contaDoGustavo)
 }
